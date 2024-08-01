@@ -98,10 +98,10 @@ hil_simulation/build/
 build*/
 *.dat
 *.fst*
-efinix_titanium_build/outflow/
-efinix_titanium_build/work_pnr/
-efinix_titanium_build/work_pt/
-efinix_titanium_build/work_syn/
+efinity_board_test/outflow/
+efinity_board_test/work_pnr/
+efinity_board_test/work_pt/
+efinity_board_test/work_syn/
 .lock
 __pycache__
 output/
