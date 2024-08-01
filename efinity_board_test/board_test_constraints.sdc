@@ -5,7 +5,7 @@
 
 # Efinity Interface Designer SDC
 # Version: 2024.1.163.1.8
-# Date: 2024-08-01 09:37
+# Date: 2024-08-01 15:00
 
 # Copyright (C) 2013 - 2024 Efinix Inc. All rights reserved.
 
@@ -16,18 +16,68 @@
 # PLL Constraints
 #################
 create_clock -period 10.0000 pll_inst1_CLKOUT0
-create_clock -period 7.8125 main_clock
-create_clock -period 20.0000 pll_inst1_CLKOUT0 
+create_clock -period 7.5000 main_clock
+create_clock -waveform {0.4688 1.4062} -period 1.8750 main_clockx4
 
 # GPIO Constraints
 ####################
 # set_input_delay -clock <CLOCK> [-reference_pin <clkout_pad>] -max <MAX CALCULATION> [get_ports {uart_rx}]
 # set_input_delay -clock <CLOCK> [-reference_pin <clkout_pad>] -min <MIN CALCULATION> [get_ports {uart_rx}]
+# set_output_delay -clock <CLOCK> [-reference_pin <clkout_pad>] -max <MAX CALCULATION> [get_ports {power_connector_io_2}]
+# set_output_delay -clock <CLOCK> [-reference_pin <clkout_pad>] -min <MIN CALCULATION> [get_ports {power_connector_io_2}]
+# set_output_delay -clock <CLOCK> [-reference_pin <clkout_pad>] -max <MAX CALCULATION> [get_ports {power_connector_io_16}]
+# set_output_delay -clock <CLOCK> [-reference_pin <clkout_pad>] -min <MIN CALCULATION> [get_ports {power_connector_io_16}]
 # set_output_delay -clock <CLOCK> [-reference_pin <clkout_pad>] -max <MAX CALCULATION> [get_ports {uart_tx}]
 # set_output_delay -clock <CLOCK> [-reference_pin <clkout_pad>] -min <MIN CALCULATION> [get_ports {uart_tx}]
 
 # HSIO GPIO Constraints
 #########################
+set_output_delay -clock main_clock -reference_pin [get_ports {main_clock~CLKOUT~1~272}] -max 0.263 [get_ports {gpio_inst28[*]}]
+set_output_delay -clock main_clock -reference_pin [get_ports {main_clock~CLKOUT~1~272}] -min -0.140 [get_ports {gpio_inst28[*]}]
+# set_output_delay -clock <CLOCK> [-reference_pin <clkout_pad>] -max <MAX CALCULATION> [get_ports {power_connector_io_0}]
+# set_output_delay -clock <CLOCK> [-reference_pin <clkout_pad>] -min <MIN CALCULATION> [get_ports {power_connector_io_0}]
+# set_output_delay -clock <CLOCK> [-reference_pin <clkout_pad>] -max <MAX CALCULATION> [get_ports {power_connector_io_1}]
+# set_output_delay -clock <CLOCK> [-reference_pin <clkout_pad>] -min <MIN CALCULATION> [get_ports {power_connector_io_1}]
+# set_output_delay -clock <CLOCK> [-reference_pin <clkout_pad>] -max <MAX CALCULATION> [get_ports {power_connector_io_3}]
+# set_output_delay -clock <CLOCK> [-reference_pin <clkout_pad>] -min <MIN CALCULATION> [get_ports {power_connector_io_3}]
+# set_output_delay -clock <CLOCK> [-reference_pin <clkout_pad>] -max <MAX CALCULATION> [get_ports {power_connector_io_15_downto_4[4]}]
+# set_output_delay -clock <CLOCK> [-reference_pin <clkout_pad>] -min <MIN CALCULATION> [get_ports {power_connector_io_15_downto_4[4]}]
+# set_output_delay -clock <CLOCK> [-reference_pin <clkout_pad>] -max <MAX CALCULATION> [get_ports {power_connector_io_15_downto_4[5]}]
+# set_output_delay -clock <CLOCK> [-reference_pin <clkout_pad>] -min <MIN CALCULATION> [get_ports {power_connector_io_15_downto_4[5]}]
+# set_output_delay -clock <CLOCK> [-reference_pin <clkout_pad>] -max <MAX CALCULATION> [get_ports {power_connector_io_15_downto_4[6]}]
+# set_output_delay -clock <CLOCK> [-reference_pin <clkout_pad>] -min <MIN CALCULATION> [get_ports {power_connector_io_15_downto_4[6]}]
+# set_output_delay -clock <CLOCK> [-reference_pin <clkout_pad>] -max <MAX CALCULATION> [get_ports {power_connector_io_15_downto_4[7]}]
+# set_output_delay -clock <CLOCK> [-reference_pin <clkout_pad>] -min <MIN CALCULATION> [get_ports {power_connector_io_15_downto_4[7]}]
+# set_output_delay -clock <CLOCK> [-reference_pin <clkout_pad>] -max <MAX CALCULATION> [get_ports {power_connector_io_15_downto_4[8]}]
+# set_output_delay -clock <CLOCK> [-reference_pin <clkout_pad>] -min <MIN CALCULATION> [get_ports {power_connector_io_15_downto_4[8]}]
+# set_output_delay -clock <CLOCK> [-reference_pin <clkout_pad>] -max <MAX CALCULATION> [get_ports {power_connector_io_15_downto_4[9]}]
+# set_output_delay -clock <CLOCK> [-reference_pin <clkout_pad>] -min <MIN CALCULATION> [get_ports {power_connector_io_15_downto_4[9]}]
+# set_output_delay -clock <CLOCK> [-reference_pin <clkout_pad>] -max <MAX CALCULATION> [get_ports {power_connector_io_15_downto_4[10]}]
+# set_output_delay -clock <CLOCK> [-reference_pin <clkout_pad>] -min <MIN CALCULATION> [get_ports {power_connector_io_15_downto_4[10]}]
+# set_output_delay -clock <CLOCK> [-reference_pin <clkout_pad>] -max <MAX CALCULATION> [get_ports {power_connector_io_15_downto_4[11]}]
+# set_output_delay -clock <CLOCK> [-reference_pin <clkout_pad>] -min <MIN CALCULATION> [get_ports {power_connector_io_15_downto_4[11]}]
+# set_output_delay -clock <CLOCK> [-reference_pin <clkout_pad>] -max <MAX CALCULATION> [get_ports {power_connector_io_15_downto_4[12]}]
+# set_output_delay -clock <CLOCK> [-reference_pin <clkout_pad>] -min <MIN CALCULATION> [get_ports {power_connector_io_15_downto_4[12]}]
+# set_output_delay -clock <CLOCK> [-reference_pin <clkout_pad>] -max <MAX CALCULATION> [get_ports {power_connector_io_15_downto_4[13]}]
+# set_output_delay -clock <CLOCK> [-reference_pin <clkout_pad>] -min <MIN CALCULATION> [get_ports {power_connector_io_15_downto_4[13]}]
+# set_output_delay -clock <CLOCK> [-reference_pin <clkout_pad>] -max <MAX CALCULATION> [get_ports {power_connector_io_15_downto_4[14]}]
+# set_output_delay -clock <CLOCK> [-reference_pin <clkout_pad>] -min <MIN CALCULATION> [get_ports {power_connector_io_15_downto_4[14]}]
+# set_output_delay -clock <CLOCK> [-reference_pin <clkout_pad>] -max <MAX CALCULATION> [get_ports {power_connector_io_15_downto_4[15]}]
+# set_output_delay -clock <CLOCK> [-reference_pin <clkout_pad>] -min <MIN CALCULATION> [get_ports {power_connector_io_15_downto_4[15]}]
+# set_output_delay -clock <CLOCK> [-reference_pin <clkout_pad>] -max <MAX CALCULATION> [get_ports {power_connector_io_23_downto_17[17]}]
+# set_output_delay -clock <CLOCK> [-reference_pin <clkout_pad>] -min <MIN CALCULATION> [get_ports {power_connector_io_23_downto_17[17]}]
+# set_output_delay -clock <CLOCK> [-reference_pin <clkout_pad>] -max <MAX CALCULATION> [get_ports {power_connector_io_23_downto_17[18]}]
+# set_output_delay -clock <CLOCK> [-reference_pin <clkout_pad>] -min <MIN CALCULATION> [get_ports {power_connector_io_23_downto_17[18]}]
+# set_output_delay -clock <CLOCK> [-reference_pin <clkout_pad>] -max <MAX CALCULATION> [get_ports {power_connector_io_23_downto_17[19]}]
+# set_output_delay -clock <CLOCK> [-reference_pin <clkout_pad>] -min <MIN CALCULATION> [get_ports {power_connector_io_23_downto_17[19]}]
+# set_output_delay -clock <CLOCK> [-reference_pin <clkout_pad>] -max <MAX CALCULATION> [get_ports {power_connector_io_23_downto_17[20]}]
+# set_output_delay -clock <CLOCK> [-reference_pin <clkout_pad>] -min <MIN CALCULATION> [get_ports {power_connector_io_23_downto_17[20]}]
+# set_output_delay -clock <CLOCK> [-reference_pin <clkout_pad>] -max <MAX CALCULATION> [get_ports {power_connector_io_23_downto_17[21]}]
+# set_output_delay -clock <CLOCK> [-reference_pin <clkout_pad>] -min <MIN CALCULATION> [get_ports {power_connector_io_23_downto_17[21]}]
+# set_output_delay -clock <CLOCK> [-reference_pin <clkout_pad>] -max <MAX CALCULATION> [get_ports {power_connector_io_23_downto_17[22]}]
+# set_output_delay -clock <CLOCK> [-reference_pin <clkout_pad>] -min <MIN CALCULATION> [get_ports {power_connector_io_23_downto_17[22]}]
+# set_output_delay -clock <CLOCK> [-reference_pin <clkout_pad>] -max <MAX CALCULATION> [get_ports {power_connector_io_23_downto_17[23]}]
+# set_output_delay -clock <CLOCK> [-reference_pin <clkout_pad>] -min <MIN CALCULATION> [get_ports {power_connector_io_23_downto_17[23]}]
 
 # Clock Latency Constraints
 ############################
@@ -35,3 +85,5 @@ create_clock -period 20.0000 pll_inst1_CLKOUT0
 # set_clock_latency -source -hold <board_min + 0.552> [get_ports {pll_inst1_CLKOUT0}]
 # set_clock_latency -source -setup <board_max + 0.828> [get_ports {main_clock}]
 # set_clock_latency -source -hold <board_min + 0.552> [get_ports {main_clock}]
+# set_clock_latency -source -setup <board_max + 0.828> [get_ports {main_clockx4}]
+# set_clock_latency -source -hold <board_min + 0.552> [get_ports {main_clockx4}]
