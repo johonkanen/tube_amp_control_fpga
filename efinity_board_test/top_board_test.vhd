@@ -19,7 +19,20 @@ entity top is
         power_connector_io_15_downto_4  : out std_logic_vector(15 downto 4);
         power_connector_io_16           : out std_logic;
         power_connector_io_23_downto_17 : out std_logic_vector(23 downto 17);
-        gpio_inst28                     : out std_logic_vector(3 downto 0)
+        gpio_inst28                     : out std_logic_vector(3 downto 0);
+
+        adc_scl     : out std_logic;
+        -- 3-state io
+        adc_sda_IN  : in std_logic;
+        adc_sda_OUT : out std_logic;
+        adc_sda_OE  : out std_logic;
+        --
+        dac_scl     : out std_logic;
+        -- 3-state io
+        dac_sda_IN  : in std_logic;
+        dac_sda_OUT : out std_logic;
+        dac_sda_OE  : out std_logic
+        --
     );
 end entity top;
 
@@ -40,6 +53,14 @@ architecture rtl of top is
     signal pwm_counter : natural range 0 to 1023;
 
 begin
+
+    adc_sda_OE  <= '0';
+    adc_sda_OUT <= power_connector_io1(0);
+    adc_scl     <= '1';
+
+    dac_sda_OE  <= '1';
+    dac_sda_OUT <= power_connector_io1(0);
+    dac_scl     <= power_connector_io1(0);
 
     power_connector_io_0            <= power_connector_io1(0);
     power_connector_io_1            <= power_connector_io1(1);
