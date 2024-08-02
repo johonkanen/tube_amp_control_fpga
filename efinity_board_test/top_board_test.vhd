@@ -1,9 +1,61 @@
+
+
+library ieee;
+    use ieee.std_logic_1164.all;
+    use ieee.numeric_std.all;
+
+package hrpwm_pkg is
+
+    function hrpwm (
+        counter : natural;
+        duty : natural)
+    return std_logic_vector;
+
+end package hrpwm_pkg;
+
+package body hrpwm_pkg is
+
+    function hrpwm
+    (
+        counter : natural;
+        duty : natural
+    )
+    return std_logic_vector
+    is
+        variable retval : std_logic_vector(3 downto 0);
+        variable hrpwm_value : unsigned(15 downto 0);
+    begin
+
+        if duty/4 > counter then
+            retval := "1111";
+        else
+            retval := "0000";
+        end if;
+
+        hrpwm_value := to_unsigned(duty,hrpwm_value'length);
+        if duty/4 = counter then
+
+            CASE to_integer(hrpwm_value(1 downto 0)) is
+                WHEN 0 => retval := "0000";
+                WHEN 1 => retval := "0001";
+                WHEN 2 => retval := "0011";
+                WHEN 3 => retval := "0111";
+                WHEN others => retval := "0000";
+            end CASE;
+        end if;
+
+        return retval;
+        
+    end hrpwm;
+
+end package body hrpwm_pkg;
+----------------------------
 library ieee;
     use ieee.std_logic_1164.all;
     use ieee.numeric_std.all;
     use ieee.math_real.all;
 
-    use work.fpga_interconnect_pkg.all;
+    use work.hrpwm_pkg.all;
 
 entity top is
     port (
@@ -21,14 +73,13 @@ entity top is
         power_connector_io_23_downto_17 : out std_logic_vector(23 downto 17);
         gpio_inst28                     : out std_logic_vector(3 downto 0);
 
+        -- iic adc
         adc_scl     : out std_logic;
-        -- 3-state io
         adc_sda_IN  : in std_logic;
         adc_sda_OUT : out std_logic;
         adc_sda_OE  : out std_logic;
-        --
+        -- iic dac
         dac_scl     : out std_logic;
-        -- 3-state io
         dac_sda_IN  : in std_logic;
         dac_sda_OUT : out std_logic;
         dac_sda_OE  : out std_logic
@@ -37,6 +88,9 @@ entity top is
 end entity top;
 
 architecture rtl of top is
+
+    package fpga_interconnect_pkg is new work.fpga_interconnect_generic_pkg generic map(16,16);
+    use fpga_interconnect_pkg.all;
 
     signal bus_to_communications   : fpga_interconnect_record := init_fpga_interconnect;
     signal bus_from_communications : fpga_interconnect_record := init_fpga_interconnect;
@@ -49,8 +103,8 @@ architecture rtl of top is
     signal power_connector_io2 : std_logic_vector(15 downto 0);
 
     signal counter_for_10us : natural range 0 to 2**16-1 := 0;
-    signal duty_ratio : natural range 0 to 8191;
-    signal pwm_counter : natural range 0 to 1023;
+    signal duty_ratio : natural range 0 to 8191 := 63;
+    signal pwm_counter : natural range 0 to 1023 := 0;
 
 begin
 
@@ -72,6 +126,7 @@ begin
 
 ------------------------------------------------
     board_test_main : process(main_clock)
+        ----
         function "+"
         (
             left : std_logic_vector; right : integer
@@ -82,38 +137,7 @@ begin
             return std_logic_vector(unsigned(left) + right);
         end "+";
 
-        function hrpwm
-        (
-            counter : natural;
-            duty : natural
-        )
-        return std_logic_vector
-        is
-            variable retval : std_logic_vector(3 downto 0);
-            variable hrpwm_value : unsigned(15 downto 0);
-        begin
-
-            if duty/4 > counter then
-                retval := "1111";
-            else
-                retval := "0000";
-            end if;
-
-            hrpwm_value := to_unsigned(duty,hrpwm_value'length);
-            if duty/4 = counter then
-
-                CASE to_integer(hrpwm_value(1 downto 0)) is
-                    WHEN 0 => retval := "0000";
-                    WHEN 1 => retval := "0001";
-                    WHEN 2 => retval := "0011";
-                    WHEN 3 => retval := "0111";
-                    WHEN others => retval := "0000";
-                end CASE;
-            end if;
-
-            return retval;
-            
-        end hrpwm;
+        ----
 
     begin
         if rising_edge(main_clock) then
@@ -129,20 +153,24 @@ begin
                 write_data_to_address(bus_out, 0, std_logic_vector(test_data));
             end if;
 
-            if counter_for_10us < 1279 then
-                counter_for_10us <= counter_for_10us + 1;
-            else
-                counter_for_10us <= 0;
+            if write_is_requested_to_address(bus_from_communications, 2) then
+                test_data <= to_unsigned(get_data(bus_from_communications),test_data'length);
             end if;
 
-            if counter_for_10us > 128 then
-                power_connector_io1 <= (others => '0');
-                power_connector_io2 <= (others => '0');
-            else
-                power_connector_io1 <= (others => '1');
-                power_connector_io2 <= (others => '1');
-            end if;
 
+            /* if counter_for_10us < 1279 then */
+            /*     counter_for_10us <= counter_for_10us + 1; */
+            /* else */
+            /*     counter_for_10us <= 0; */
+            /* end if; */
+
+            /* if counter_for_10us > 128 then */
+            /*     power_connector_io1 <= (others => '0'); */
+            /*     power_connector_io2 <= (others => '0'); */
+            /* else */
+            /*     power_connector_io1 <= (others => '1'); */
+            /*     power_connector_io2 <= (others => '1'); */
+            /* end if; */
 
             if pwm_counter < 1023 then
                 pwm_counter <= pwm_counter + 1;
@@ -165,6 +193,7 @@ begin
 
 ------------------------------------------------
     u_communications : entity work.fpga_communications
+        generic map(fpga_interconnect_pkg => fpga_interconnect_pkg, g_clock_divider => 40)
         port map(
             clock => main_clock                              ,
             uart_rx                 => uart_rx               ,

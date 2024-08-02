@@ -9,12 +9,12 @@ comport = sys.argv[1]
 
 from uart_communication_functions import *
 
-uart = uart_link(comport, 133.3333e6/24)
+uart = uart_link(comport, 200e6/40)
 
 print("data from test address: " + str(uart.request_data_from_address(1)))
 print("data from test address 2 : " + str(uart.request_data_from_address(2)))
 print("data from test address 2 : " + str(uart.request_data_from_address(2)))
 print("data from test address 2 : " + str(uart.request_data_from_address(2)))
 
-uart.plot_data_from_address(2, 50000)
+# uart.plot_data_from_address(2, 50000)
 
