@@ -1,5 +1,3 @@
-
-
 library ieee;
     use ieee.std_logic_1164.all;
     use ieee.numeric_std.all;
@@ -103,8 +101,8 @@ architecture rtl of top is
     signal power_connector_io2 : std_logic_vector(15 downto 0);
 
     signal counter_for_10us : natural range 0 to 2**16-1 := 0;
-    signal duty_ratio : natural range 0 to 8191 := 63;
-    signal pwm_counter : natural range 0 to 1023 := 0;
+    signal duty_ratio :       natural range 0 to 8191 := 63;
+    signal pwm_counter :      natural range 0 to 1023 := 0;
 
 begin
 
@@ -136,9 +134,7 @@ begin
         begin
             return std_logic_vector(unsigned(left) + right);
         end "+";
-
         ----
-
     begin
         if rising_edge(main_clock) then
 
