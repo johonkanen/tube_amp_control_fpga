@@ -80,7 +80,13 @@ entity top is
         dac_scl     : out std_logic;
         dac_sda_IN  : in std_logic;
         dac_sda_OUT : out std_logic;
-        dac_sda_OE  : out std_logic
+        dac_sda_OE  : out std_logic;
+        -- muxed adc
+        admux    : out std_logic_vector(2 downto 0);
+        ad_cs    : out std_logic;
+        ad_clock : out std_logic;
+        ad_data  : in std_logic
+
         --
     );
 end entity top;
@@ -113,6 +119,11 @@ begin
     dac_sda_OE  <= '1';
     dac_sda_OUT <= power_connector_io1(0);
     dac_scl     <= power_connector_io1(0);
+
+    admux    <= (others => power_connector_io1(0));
+    ad_cs    <= '1';
+    -- ad_data  <= power_connector_io1(0);
+    ad_clock <= '1';
 
     power_connector_io_0            <= power_connector_io1(0);
     power_connector_io_1            <= power_connector_io1(1);
@@ -154,19 +165,19 @@ begin
             end if;
 
 
-            /* if counter_for_10us < 1279 then */
-            /*     counter_for_10us <= counter_for_10us + 1; */
-            /* else */
-            /*     counter_for_10us <= 0; */
-            /* end if; */
+            if counter_for_10us < 1279 then               
+                counter_for_10us <= counter_for_10us + 1; 
+            else                                          
+                counter_for_10us <= 0;                    
+            end if;                                       
 
-            /* if counter_for_10us > 128 then */
-            /*     power_connector_io1 <= (others => '0'); */
-            /*     power_connector_io2 <= (others => '0'); */
-            /* else */
-            /*     power_connector_io1 <= (others => '1'); */
-            /*     power_connector_io2 <= (others => '1'); */
-            /* end if; */
+            if counter_for_10us > 128 then              
+                power_connector_io1 <= (others => '0'); 
+                power_connector_io2 <= (others => '0'); 
+            else                                        
+                power_connector_io1 <= (others => '1'); 
+                power_connector_io2 <= (others => '1'); 
+            end if;                                     
 
             if pwm_counter < 1023 then
                 pwm_counter <= pwm_counter + 1;
