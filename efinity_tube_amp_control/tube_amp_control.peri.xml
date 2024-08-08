@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<efxpt:design_db name="tube_amp_control" device_def="Ti60F225" version="2024.1.163" db_version="20241999" last_change_date="Thu Aug  8 16:08:28 2024" xmlns:efxpt="http://www.efinixinc.com/peri_design_db" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.efinixinc.com/peri_design_db peri_design_db.xsd ">
+<efxpt:design_db name="tube_amp_control" device_def="Ti60F225" version="2024.1.163.2.15" db_version="20241999" last_change_date="Thu Aug  8 20:02:43 2024" xmlns:efxpt="http://www.efinixinc.com/peri_design_db" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.efinixinc.com/peri_design_db peri_design_db.xsd ">
     <efxpt:device_info>
         <efxpt:iobank_info>
             <efxpt:iobank name="1A" iostd="1.8 V LVCMOS" is_dyn_voltage="false" mode_sel_name="1A_MODE_SEL"/>
@@ -108,6 +108,13 @@
         <efxpt:comp_gpio name="admux[2]" gpio_def="GPIOR_P_09" mode="output" bus_name="admux" io_standard="1.8 V LVCMOS">
             <efxpt:output_config name="admux[2]" name_ddio_lo="" register_option="none" clock_name="" is_clock_inverted="false" is_slew_rate="false" tied_option="none" ddio_type="none" delay="0" is_serial="false" drive_strength="4" fastclk_name=""/>
         </efxpt:comp_gpio>
+        <efxpt:comp_gpio name="anode_gate_hi" gpio_def="GPIOL_P_07" mode="output" bus_name="" io_standard="1.8 V LVCMOS">
+            <efxpt:output_config name="anode_gate_hi" name_ddio_lo="anode_gate_hi_LO" register_option="none" clock_name="main_clock" is_clock_inverted="false" is_slew_rate="false" tied_option="none" ddio_type="none" delay="0" is_serial="false" drive_strength="4" fastclk_name="main_clockx4"/>
+            <efxpt:unused_config state="input with weak pullup"/>
+        </efxpt:comp_gpio>
+        <efxpt:comp_gpio name="anode_gate_lo" gpio_def="GPIOL_N_02" mode="output" bus_name="" io_standard="1.8 V LVCMOS">
+            <efxpt:output_config name="anode_gate_lo" name_ddio_lo="" register_option="register" clock_name="main_clock" is_clock_inverted="false" is_slew_rate="false" tied_option="none" ddio_type="none" delay="0" is_serial="false" drive_strength="4" fastclk_name=""/>
+        </efxpt:comp_gpio>
         <efxpt:comp_gpio name="dac_scl" gpio_def="GPIOR_19" mode="output" bus_name="" io_standard="3.3 V LVCMOS">
             <efxpt:output_config name="dac_scl" name_ddio_lo="" register_option="register" clock_name="main_clock" is_clock_inverted="false" is_slew_rate="false" tied_option="none" ddio_type="none" delay="0" is_serial="false" drive_strength="6" fastclk_name=""/>
         </efxpt:comp_gpio>
@@ -116,84 +123,14 @@
             <efxpt:output_config name="dac_sda_OUT" name_ddio_lo="" register_option="none" clock_name="" is_clock_inverted="false" is_slew_rate="false" tied_option="none" ddio_type="none" delay="0" is_serial="false" drive_strength="4" fastclk_name=""/>
             <efxpt:output_enable_config name="dac_sda_OE" is_register="false" clock_name="" is_clock_inverted="false" name_oen="dac_sda_OEN"/>
         </efxpt:comp_gpio>
-        <efxpt:comp_gpio name="gpio_inst28" gpio_def="GPIOL_P_16" mode="output" bus_name="" io_standard="1.8 V SSTL">
-            <efxpt:output_config name="gpio_inst28" name_ddio_lo="gpio_inst28_LO" register_option="register" clock_name="main_clock" is_clock_inverted="false" is_slew_rate="false" tied_option="none" ddio_type="none" delay="0" is_serial="true" drive_strength="4" fastclk_name="main_clockx4"/>
-            <efxpt:unused_config state="input with weak pullup"/>
-        </efxpt:comp_gpio>
         <efxpt:comp_gpio name="pll_input_clock_50mhz" gpio_def="GPIOR_P_19" mode="input" bus_name="" io_standard="1.8 V LVCMOS">
             <efxpt:input_config name="pll_input_clock_50mhz" name_ddio_lo="" conn_type="pll_clkin" is_register="false" clock_name="" is_clock_inverted="false" pull_option="none" is_schmitt_trigger="false" ddio_type="none" is_bus_hold="false" delay="0" is_serial="false" is_dyn_delay="false" fastclk_name="" pullup_ena_name="pll_input_clock_50mhz_PULL_UP_ENA" dyn_delay_en_name="pll_input_clock_50mhz_DLY_ENA" dyn_delay_reset_name="pll_input_clock_50mhz_DLY_RST" dyn_delay_ctrl_name="pll_input_clock_50mhz_DLY_CTRL" clkmux_buf_name=""/>
         </efxpt:comp_gpio>
-        <efxpt:comp_gpio name="power_connector_io_0" gpio_def="GPIOB_P_12" mode="output" bus_name="" io_standard="1.8 V LVCMOS">
-            <efxpt:output_config name="power_connector_io_0" name_ddio_lo="" register_option="none" clock_name="" is_clock_inverted="false" is_slew_rate="false" tied_option="none" ddio_type="none" delay="0" is_serial="false" drive_strength="4" fastclk_name=""/>
+        <efxpt:comp_gpio name="preamp_gate_hi" gpio_def="GPIOL_P_02" mode="output" bus_name="" io_standard="1.8 V LVCMOS">
+            <efxpt:output_config name="preamp_gate_hi" name_ddio_lo="" register_option="none" clock_name="main_clock" is_clock_inverted="false" is_slew_rate="false" tied_option="none" ddio_type="none" delay="0" is_serial="false" drive_strength="4" fastclk_name=""/>
         </efxpt:comp_gpio>
-        <efxpt:comp_gpio name="power_connector_io_1" gpio_def="GPIOR_P_07" mode="output" bus_name="" io_standard="1.8 V LVCMOS">
-            <efxpt:output_config name="power_connector_io_1" name_ddio_lo="" register_option="none" clock_name="" is_clock_inverted="false" is_slew_rate="false" tied_option="none" ddio_type="none" delay="0" is_serial="false" drive_strength="4" fastclk_name=""/>
-        </efxpt:comp_gpio>
-        <efxpt:comp_gpio name="power_connector_io_15_downto_4[10]" gpio_def="GPIOB_P_07" mode="output" bus_name="power_connector_io_15_downto_4" io_standard="1.8 V LVCMOS">
-            <efxpt:output_config name="power_connector_io_15_downto_4[10]" name_ddio_lo="" register_option="none" clock_name="" is_clock_inverted="false" is_slew_rate="false" tied_option="none" ddio_type="none" delay="0" is_serial="false" drive_strength="4" fastclk_name=""/>
-        </efxpt:comp_gpio>
-        <efxpt:comp_gpio name="power_connector_io_15_downto_4[11]" gpio_def="GPIOR_N_09" mode="output" bus_name="power_connector_io_15_downto_4" io_standard="1.8 V LVCMOS">
-            <efxpt:output_config name="power_connector_io_15_downto_4[11]" name_ddio_lo="" register_option="none" clock_name="" is_clock_inverted="false" is_slew_rate="false" tied_option="none" ddio_type="none" delay="0" is_serial="false" drive_strength="4" fastclk_name=""/>
-        </efxpt:comp_gpio>
-        <efxpt:comp_gpio name="power_connector_io_15_downto_4[12]" gpio_def="GPIOB_N_07" mode="output" bus_name="power_connector_io_15_downto_4" io_standard="1.8 V LVCMOS">
-            <efxpt:output_config name="power_connector_io_15_downto_4[12]" name_ddio_lo="" register_option="none" clock_name="" is_clock_inverted="false" is_slew_rate="false" tied_option="none" ddio_type="none" delay="0" is_serial="false" drive_strength="4" fastclk_name=""/>
-        </efxpt:comp_gpio>
-        <efxpt:comp_gpio name="power_connector_io_15_downto_4[13]" gpio_def="GPIOR_N_05" mode="output" bus_name="power_connector_io_15_downto_4" io_standard="1.8 V LVCMOS">
-            <efxpt:output_config name="power_connector_io_15_downto_4[13]" name_ddio_lo="" register_option="none" clock_name="" is_clock_inverted="false" is_slew_rate="false" tied_option="none" ddio_type="none" delay="0" is_serial="false" drive_strength="4" fastclk_name=""/>
-        </efxpt:comp_gpio>
-        <efxpt:comp_gpio name="power_connector_io_15_downto_4[14]" gpio_def="GPIOB_P_02" mode="output" bus_name="power_connector_io_15_downto_4" io_standard="1.8 V LVCMOS">
-            <efxpt:output_config name="power_connector_io_15_downto_4[14]" name_ddio_lo="" register_option="none" clock_name="" is_clock_inverted="false" is_slew_rate="false" tied_option="none" ddio_type="none" delay="0" is_serial="false" drive_strength="4" fastclk_name=""/>
-        </efxpt:comp_gpio>
-        <efxpt:comp_gpio name="power_connector_io_15_downto_4[15]" gpio_def="GPIOB_N_12" mode="output" bus_name="power_connector_io_15_downto_4" io_standard="1.8 V LVCMOS">
-            <efxpt:output_config name="power_connector_io_15_downto_4[15]" name_ddio_lo="" register_option="none" clock_name="" is_clock_inverted="false" is_slew_rate="false" tied_option="none" ddio_type="none" delay="0" is_serial="false" drive_strength="4" fastclk_name=""/>
-        </efxpt:comp_gpio>
-        <efxpt:comp_gpio name="power_connector_io_15_downto_4[4]" gpio_def="GPIOB_P_17" mode="output" bus_name="power_connector_io_15_downto_4" io_standard="1.8 V LVCMOS">
-            <efxpt:output_config name="power_connector_io_15_downto_4[4]" name_ddio_lo="" register_option="none" clock_name="" is_clock_inverted="false" is_slew_rate="false" tied_option="none" ddio_type="none" delay="0" is_serial="false" drive_strength="4" fastclk_name=""/>
-        </efxpt:comp_gpio>
-        <efxpt:comp_gpio name="power_connector_io_15_downto_4[5]" gpio_def="GPIOB_P_14" mode="output" bus_name="power_connector_io_15_downto_4" io_standard="1.8 V LVCMOS">
-            <efxpt:output_config name="power_connector_io_15_downto_4[5]" name_ddio_lo="" register_option="none" clock_name="" is_clock_inverted="false" is_slew_rate="false" tied_option="none" ddio_type="none" delay="0" is_serial="false" drive_strength="4" fastclk_name=""/>
-        </efxpt:comp_gpio>
-        <efxpt:comp_gpio name="power_connector_io_15_downto_4[6]" gpio_def="GPIOB_N_17" mode="output" bus_name="power_connector_io_15_downto_4" io_standard="1.8 V LVCMOS">
-            <efxpt:output_config name="power_connector_io_15_downto_4[6]" name_ddio_lo="" register_option="none" clock_name="" is_clock_inverted="false" is_slew_rate="false" tied_option="none" ddio_type="none" delay="0" is_serial="false" drive_strength="4" fastclk_name=""/>
-        </efxpt:comp_gpio>
-        <efxpt:comp_gpio name="power_connector_io_15_downto_4[7]" gpio_def="GPIOB_N_15" mode="output" bus_name="power_connector_io_15_downto_4" io_standard="1.8 V LVCMOS">
-            <efxpt:output_config name="power_connector_io_15_downto_4[7]" name_ddio_lo="" register_option="none" clock_name="" is_clock_inverted="false" is_slew_rate="false" tied_option="none" ddio_type="none" delay="0" is_serial="false" drive_strength="4" fastclk_name=""/>
-        </efxpt:comp_gpio>
-        <efxpt:comp_gpio name="power_connector_io_15_downto_4[8]" gpio_def="GPIOB_P_13" mode="output" bus_name="power_connector_io_15_downto_4" io_standard="1.8 V LVCMOS">
-            <efxpt:output_config name="power_connector_io_15_downto_4[8]" name_ddio_lo="" register_option="none" clock_name="" is_clock_inverted="false" is_slew_rate="false" tied_option="none" ddio_type="none" delay="0" is_serial="false" drive_strength="4" fastclk_name=""/>
-        </efxpt:comp_gpio>
-        <efxpt:comp_gpio name="power_connector_io_15_downto_4[9]" gpio_def="GPIOB_P_15" mode="output" bus_name="power_connector_io_15_downto_4" io_standard="1.8 V LVCMOS">
-            <efxpt:output_config name="power_connector_io_15_downto_4[9]" name_ddio_lo="" register_option="none" clock_name="" is_clock_inverted="false" is_slew_rate="false" tied_option="none" ddio_type="none" delay="0" is_serial="false" drive_strength="4" fastclk_name=""/>
-        </efxpt:comp_gpio>
-        <efxpt:comp_gpio name="power_connector_io_16" gpio_def="GPIOR_27" mode="output" bus_name="" io_standard="3.3 V LVCMOS">
-            <efxpt:output_config name="power_connector_io_16" name_ddio_lo="" register_option="none" clock_name="" is_clock_inverted="false" is_slew_rate="false" tied_option="none" ddio_type="none" delay="0" is_serial="false" drive_strength="4" fastclk_name=""/>
-        </efxpt:comp_gpio>
-        <efxpt:comp_gpio name="power_connector_io_2" gpio_def="GPIOR_29" mode="output" bus_name="" io_standard="3.3 V LVCMOS">
-            <efxpt:output_config name="power_connector_io_2" name_ddio_lo="" register_option="none" clock_name="" is_clock_inverted="false" is_slew_rate="false" tied_option="none" ddio_type="none" delay="0" is_serial="false" drive_strength="4" fastclk_name=""/>
-        </efxpt:comp_gpio>
-        <efxpt:comp_gpio name="power_connector_io_23_downto_17[17]" gpio_def="GPIOB_P_01" mode="output" bus_name="power_connector_io_23_downto_17" io_standard="1.8 V LVCMOS">
-            <efxpt:output_config name="power_connector_io_23_downto_17[17]" name_ddio_lo="" register_option="none" clock_name="" is_clock_inverted="false" is_slew_rate="false" tied_option="none" ddio_type="none" delay="0" is_serial="false" drive_strength="4" fastclk_name=""/>
-        </efxpt:comp_gpio>
-        <efxpt:comp_gpio name="power_connector_io_23_downto_17[18]" gpio_def="GPIOB_N_01" mode="output" bus_name="power_connector_io_23_downto_17" io_standard="1.8 V LVCMOS">
-            <efxpt:output_config name="power_connector_io_23_downto_17[18]" name_ddio_lo="" register_option="none" clock_name="" is_clock_inverted="false" is_slew_rate="false" tied_option="none" ddio_type="none" delay="0" is_serial="false" drive_strength="4" fastclk_name=""/>
-        </efxpt:comp_gpio>
-        <efxpt:comp_gpio name="power_connector_io_23_downto_17[19]" gpio_def="GPIOB_P_00" mode="output" bus_name="power_connector_io_23_downto_17" io_standard="1.8 V LVCMOS">
-            <efxpt:output_config name="power_connector_io_23_downto_17[19]" name_ddio_lo="" register_option="none" clock_name="" is_clock_inverted="false" is_slew_rate="false" tied_option="none" ddio_type="none" delay="0" is_serial="false" drive_strength="4" fastclk_name=""/>
-        </efxpt:comp_gpio>
-        <efxpt:comp_gpio name="power_connector_io_23_downto_17[20]" gpio_def="GPIOL_N_02" mode="output" bus_name="power_connector_io_23_downto_17" io_standard="1.8 V LVCMOS">
-            <efxpt:output_config name="power_connector_io_23_downto_17[20]" name_ddio_lo="" register_option="none" clock_name="" is_clock_inverted="false" is_slew_rate="false" tied_option="none" ddio_type="none" delay="0" is_serial="false" drive_strength="4" fastclk_name=""/>
-        </efxpt:comp_gpio>
-        <efxpt:comp_gpio name="power_connector_io_23_downto_17[21]" gpio_def="GPIOL_N_06" mode="output" bus_name="power_connector_io_23_downto_17" io_standard="1.8 V LVCMOS">
-            <efxpt:output_config name="power_connector_io_23_downto_17[21]" name_ddio_lo="" register_option="none" clock_name="" is_clock_inverted="false" is_slew_rate="false" tied_option="none" ddio_type="none" delay="0" is_serial="false" drive_strength="4" fastclk_name=""/>
-        </efxpt:comp_gpio>
-        <efxpt:comp_gpio name="power_connector_io_23_downto_17[22]" gpio_def="GPIOL_P_07" mode="output" bus_name="power_connector_io_23_downto_17" io_standard="1.8 V LVCMOS">
-            <efxpt:output_config name="power_connector_io_23_downto_17[22]" name_ddio_lo="" register_option="none" clock_name="" is_clock_inverted="false" is_slew_rate="false" tied_option="none" ddio_type="none" delay="0" is_serial="false" drive_strength="4" fastclk_name=""/>
-        </efxpt:comp_gpio>
-        <efxpt:comp_gpio name="power_connector_io_23_downto_17[23]" gpio_def="GPIOL_P_02" mode="output" bus_name="power_connector_io_23_downto_17" io_standard="1.8 V LVCMOS">
-            <efxpt:output_config name="power_connector_io_23_downto_17[23]" name_ddio_lo="" register_option="none" clock_name="" is_clock_inverted="false" is_slew_rate="false" tied_option="none" ddio_type="none" delay="0" is_serial="false" drive_strength="4" fastclk_name=""/>
-        </efxpt:comp_gpio>
-        <efxpt:comp_gpio name="power_connector_io_3" gpio_def="GPIOR_N_14" mode="output" bus_name="" io_standard="1.8 V LVCMOS">
-            <efxpt:output_config name="power_connector_io_3" name_ddio_lo="" register_option="none" clock_name="" is_clock_inverted="false" is_slew_rate="false" tied_option="none" ddio_type="none" delay="0" is_serial="false" drive_strength="4" fastclk_name=""/>
+        <efxpt:comp_gpio name="preamp_gate_lo" gpio_def="GPIOL_N_06" mode="output" bus_name="" io_standard="1.8 V LVCMOS">
+            <efxpt:output_config name="preamp_gate_lo" name_ddio_lo="" register_option="none" clock_name="main_clock" is_clock_inverted="false" is_slew_rate="false" tied_option="none" ddio_type="none" delay="0" is_serial="false" drive_strength="4" fastclk_name=""/>
         </efxpt:comp_gpio>
         <efxpt:comp_gpio name="uart_rx" gpio_def="GPIOL_01" mode="input" bus_name="" io_standard="3.3 V LVCMOS">
             <efxpt:input_config name="uart_rx" name_ddio_lo="" conn_type="normal" is_register="false" clock_name="" is_clock_inverted="false" pull_option="none" is_schmitt_trigger="false" ddio_type="none" is_bus_hold="false" delay="0" is_serial="false" is_dyn_delay="false" fastclk_name="" pullup_ena_name="uart_rx_PULL_UP_ENA" dyn_delay_en_name="uart_rx_DLY_ENA" dyn_delay_reset_name="uart_rx_DLY_RST" dyn_delay_ctrl_name="uart_rx_DLY_CTRL" clkmux_buf_name=""/>
@@ -202,8 +139,6 @@
             <efxpt:output_config name="uart_tx" name_ddio_lo="" register_option="none" clock_name="" is_clock_inverted="false" is_slew_rate="false" tied_option="none" ddio_type="none" delay="0" is_serial="false" drive_strength="4" fastclk_name=""/>
         </efxpt:comp_gpio>
         <efxpt:global_unused_config state="input with weak pulldown"/>
-        <efxpt:bus name="power_connector_io_15_downto_4" mode="output" msb="11" lsb="4"/>
-        <efxpt:bus name="power_connector_io_23_downto_17" mode="output" msb="23" lsb="17"/>
         <efxpt:bus name="admux" mode="output" msb="2" lsb="0"/>
     </efxpt:gpio_info>
     <efxpt:pll_info>
