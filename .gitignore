@@ -102,6 +102,12 @@ efinity_board_test/outflow/
 efinity_board_test/work_pnr/
 efinity_board_test/work_pt/
 efinity_board_test/work_syn/
+
+efinity_tube_amp_control/outflow/
+efinity_tube_amp_control/work_pnr/
+efinity_tube_amp_control/work_pt/
+efinity_tube_amp_control/work_syn/
 .lock
 __pycache__
 output/
+
