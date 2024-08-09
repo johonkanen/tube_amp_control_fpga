@@ -20,13 +20,26 @@ architecture vunit_simulation of ads7056_tb is
     -----------------------------------
     -- simulation specific signals ----
 
+    type clock_divider_record is record
+        ad_clock : std_logic;
+        clock_counter    : natural range 0 to 7;
+        number_of_clocks : natural range 0 to 63;
+        requested_number_of_clock_pulses : natural;
+    end record;
+
+    constant init_clock_divider : clock_divider_record := ('1',0,8,7);
+
+    signal self : clock_divider_record := init_clock_divider;
+
     signal clock_counter : natural range 0 to 7;
     signal number_of_clocks : natural range 0 to 63 := 8;
 
     signal ad_clock : std_logic := '1';
-    signal requested_number_of_clock_pulses : natural := 7;
 
 begin
+
+    clock_counter <= self.clock_counter;
+    ad_clock      <= self.ad_clock;
 
 ------------------------------------------------------------------------
     simtime : process
@@ -47,33 +60,31 @@ begin
             number_of_clock_pulses : natural
         ) is
         begin
-            requested_number_of_clock_pulses <= number_of_clock_pulses;
-            number_of_clocks <= 0;
+            self.requested_number_of_clock_pulses <= number_of_clock_pulses;
+            self.number_of_clocks <= 0;
         end request_number_of_clock_pulses;
 
     begin
         if rising_edge(simulator_clock) then
             simulation_counter <= simulation_counter + 1;
 
-            if number_of_clocks <= requested_number_of_clock_pulses then
-                if clock_counter < 3 then
-                    clock_counter <= clock_counter + 1;
+            if self.number_of_clocks <= self.requested_number_of_clock_pulses then
+                if self.clock_counter < 3 then
+                    self.clock_counter <= self.clock_counter + 1;
                 else
-                    number_of_clocks <= number_of_clocks + 1;
-                    clock_counter <= 0;
+                    self.number_of_clocks <= self.number_of_clocks + 1;
+                    self.clock_counter <= 0;
                 end if;
-                if clock_counter < 2 then
-                    ad_clock <= '0';
+                if self.clock_counter < 2 then
+                    self.ad_clock <= '0';
                 else 
-                    ad_clock <= '1';
+                    self.ad_clock <= '1';
                 end if;
             end if;
-
 
             if simulation_counter = 15 then
                 request_number_of_clock_pulses(7);
             end if;
-
 
         end if; -- rising_edge
     end process stimulus;	
