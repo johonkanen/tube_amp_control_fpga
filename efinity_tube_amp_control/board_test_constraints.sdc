@@ -15,9 +15,8 @@
 
 # PLL Constraints
 #################
-create_clock -period 10.0000 pll_inst1_CLKOUT0
-create_clock -period 7.5000 main_clock
-create_clock -waveform {0.4688 1.4062} -period 1.8750 main_clockx4
+create_clock -period 5.000 main_clock
+#create_clock -waveform {0.4688 1.4062} -period 1.8750 main_clockx4
 
 # GPIO Constraints
 ####################
@@ -32,8 +31,8 @@ create_clock -waveform {0.4688 1.4062} -period 1.8750 main_clockx4
 
 # HSIO GPIO Constraints
 #########################
-set_output_delay -clock main_clock -reference_pin [get_ports {main_clock~CLKOUT~1~272}] -max 0.263 [get_ports {gpio_inst28[*]}]
-set_output_delay -clock main_clock -reference_pin [get_ports {main_clock~CLKOUT~1~272}] -min -0.140 [get_ports {gpio_inst28[*]}]
+#set_output_delay -clock main_clock -reference_pin [get_ports {main_clock~CLKOUT~1~272}] -max 0.263 [get_ports {gpio_inst28[*]}]
+#set_output_delay -clock main_clock -reference_pin [get_ports {main_clock~CLKOUT~1~272}] -min -0.140 [get_ports {gpio_inst28[*]}]
 # set_output_delay -clock <CLOCK> [-reference_pin <clkout_pad>] -max <MAX CALCULATION> [get_ports {power_connector_io_0}]
 # set_output_delay -clock <CLOCK> [-reference_pin <clkout_pad>] -min <MIN CALCULATION> [get_ports {power_connector_io_0}]
 # set_output_delay -clock <CLOCK> [-reference_pin <clkout_pad>] -max <MAX CALCULATION> [get_ports {power_connector_io_1}]
