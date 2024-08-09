@@ -79,18 +79,21 @@ begin
             connect_read_only_data_to_address(bus_from_communications, bus_out, 1, 44252);
             connect_data_to_address(bus_from_communications, bus_out, 12, duty_ratio);
 
+            -----
             if pwm_counter < 4999 then
                 pwm_counter <= pwm_counter + 1;
             else
                 pwm_counter <= 0;
             end if;
 
+            -----
             if duty_ratio > integer(0.5*5000.0) then
                 duty <= integer(0.5*5000.0);
             else
                 duty <= duty_ratio;
             end if;
 
+            -----
             if duty < pwm_counter then
                 anode_pwm(0) <= '1';
             else
