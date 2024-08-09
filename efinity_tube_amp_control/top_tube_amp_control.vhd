@@ -47,7 +47,7 @@ architecture rtl of top is
 
     signal bus_out : fpga_interconnect_record := init_fpga_interconnect;
 
-    signal duty_ratio       : natural range 0 to 8191    := 63;
+    signal duty_ratio       : natural range 0 to 8191    := 2000;
     signal duty             : natural range 0 to 8191    := 63;
     signal pwm_counter      : natural range 0 to 2**13   := 0;
 
@@ -105,6 +105,7 @@ begin
             end if;
 
             if deadtime_counter < 159 then
+                deadtime_counter <= deadtime_counter + 1;
                 anode_gate_hi  <= '0';
                 anode_gate_lo  <= '0';
                 preamp_gate_hi <= '0';
