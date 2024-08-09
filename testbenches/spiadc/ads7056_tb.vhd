@@ -1,7 +1,44 @@
+library ieee;
+    use ieee.std_logic_1164.all;
+    use ieee.numeric_std.all;
+
+package clock_divider_pkg is
+
+    type clock_divider_record is record
+        ad_clock : std_logic;
+        clock_counter    : natural range 0 to 7;
+        number_of_clocks : natural range 0 to 63;
+        requested_number_of_clock_pulses : natural;
+    end record;
+
+    constant init_clock_divider : clock_divider_record := ('1',0,8,7);
+
+    procedure request_number_of_clock_pulses (
+        signal self : inout clock_divider_record;
+        number_of_clock_pulses : natural);
+
+end package clock_divider_pkg;
+
+package body clock_divider_pkg is
+
+    procedure request_number_of_clock_pulses
+    (
+        signal self : inout clock_divider_record;
+        number_of_clock_pulses : natural
+    ) is
+    begin
+        self.requested_number_of_clock_pulses <= number_of_clock_pulses;
+        self.number_of_clocks <= 0;
+    end request_number_of_clock_pulses;
+
+end package body clock_divider_pkg;
+--
 LIBRARY ieee  ; 
     USE ieee.NUMERIC_STD.all  ; 
     USE ieee.std_logic_1164.all  ; 
     use ieee.math_real.all;
+
+    use work.clock_divider_pkg.all;
 
 library vunit_lib;
 context vunit_lib.vunit_context;
@@ -20,19 +57,10 @@ architecture vunit_simulation of ads7056_tb is
     -----------------------------------
     -- simulation specific signals ----
 
-    type clock_divider_record is record
-        ad_clock : std_logic;
-        clock_counter    : natural range 0 to 7;
-        number_of_clocks : natural range 0 to 63;
-        requested_number_of_clock_pulses : natural;
-    end record;
-
-    constant init_clock_divider : clock_divider_record := ('1',0,8,7);
-
     signal self : clock_divider_record := init_clock_divider;
 
-    signal clock_counter : natural range 0 to 7;
-    signal number_of_clocks : natural range 0 to 63 := 8;
+    signal clock_counter    : natural range 0 to 7;
+    signal number_of_clocks : natural range 0 to 63;
 
     signal ad_clock : std_logic := '1';
 
@@ -55,14 +83,6 @@ begin
 
     stimulus : process(simulator_clock)
 
-        procedure request_number_of_clock_pulses
-        (
-            number_of_clock_pulses : natural
-        ) is
-        begin
-            self.requested_number_of_clock_pulses <= number_of_clock_pulses;
-            self.number_of_clocks <= 0;
-        end request_number_of_clock_pulses;
 
     begin
         if rising_edge(simulator_clock) then
@@ -83,7 +103,7 @@ begin
             end if;
 
             if simulation_counter = 15 then
-                request_number_of_clock_pulses(7);
+                request_number_of_clock_pulses(self,7);
             end if;
 
         end if; -- rising_edge
