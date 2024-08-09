@@ -5,22 +5,71 @@ library ieee;
 package clock_divider_pkg is
 
     type clock_divider_record is record
-        ad_clock : std_logic;
+        is_ready : boolean;
         clock_counter    : natural range 0 to 7;
         number_of_clocks : natural range 0 to 63;
         requested_number_of_clock_pulses : natural;
     end record;
 
-    constant init_clock_divider : clock_divider_record := ('1',0,8,7);
+    constant init_clock_divider : clock_divider_record := (false,0,8,7);
 
+----------------------------------------------------
+    procedure create_clock_divider (
+        signal self : inout clock_divider_record);
+----------------------------------------------------
     procedure request_number_of_clock_pulses (
         signal self : inout clock_divider_record;
         number_of_clock_pulses : natural);
+----------------------------------------------------
+    function get_clock_from_divider ( self : clock_divider_record)
+        return std_logic ;
+----------------------------------------------------
+    function clock_divider_is_ready ( self : clock_divider_record)
+        return boolean;
 
 end package clock_divider_pkg;
 
 package body clock_divider_pkg is
 
+    function get_clock_from_divider
+    (
+        self : clock_divider_record
+    )
+    return std_logic 
+    is
+        variable retval : std_logic := '1';
+    begin
+
+        retval := '1';
+        if self.number_of_clocks <= self.requested_number_of_clock_pulses then
+            if self.clock_counter < 2 then
+                retval := '0';
+            end if;
+        end if;
+
+        return retval;
+        
+    end get_clock_from_divider;
+
+----------------------------------------------------
+    procedure create_clock_divider
+    (
+        signal self : inout clock_divider_record
+    ) is
+    begin
+
+        if self.number_of_clocks <= self.requested_number_of_clock_pulses then
+            if self.clock_counter < 3 then
+                self.clock_counter <= self.clock_counter + 1;
+            else
+                self.number_of_clocks <= self.number_of_clocks + 1;
+                self.clock_counter <= 0;
+            end if;
+        end if;
+        
+    end create_clock_divider;
+
+----------------------------------------------------
     procedure request_number_of_clock_pulses
     (
         signal self : inout clock_divider_record;
@@ -30,9 +79,22 @@ package body clock_divider_pkg is
         self.requested_number_of_clock_pulses <= number_of_clock_pulses;
         self.number_of_clocks <= 0;
     end request_number_of_clock_pulses;
+----------------------------------------------------
+    function clock_divider_is_ready
+    (
+        self : clock_divider_record
+    )
+    return boolean
+    is
+    begin
+        
+        return self.is_ready;
+    end clock_divider_is_ready;
+----------------------------------------------------
 
 end package body clock_divider_pkg;
---
+
+----------------------------------------------------
 LIBRARY ieee  ; 
     USE ieee.NUMERIC_STD.all  ; 
     USE ieee.std_logic_1164.all  ; 
@@ -67,7 +129,6 @@ architecture vunit_simulation of ads7056_tb is
 begin
 
     clock_counter <= self.clock_counter;
-    ad_clock      <= self.ad_clock;
 
 ------------------------------------------------------------------------
     simtime : process
@@ -83,24 +144,12 @@ begin
 
     stimulus : process(simulator_clock)
 
-
     begin
         if rising_edge(simulator_clock) then
             simulation_counter <= simulation_counter + 1;
 
-            if self.number_of_clocks <= self.requested_number_of_clock_pulses then
-                if self.clock_counter < 3 then
-                    self.clock_counter <= self.clock_counter + 1;
-                else
-                    self.number_of_clocks <= self.number_of_clocks + 1;
-                    self.clock_counter <= 0;
-                end if;
-                if self.clock_counter < 2 then
-                    self.ad_clock <= '0';
-                else 
-                    self.ad_clock <= '1';
-                end if;
-            end if;
+            create_clock_divider(self);
+            ad_clock <= get_clock_from_divider(self);
 
             if simulation_counter = 15 then
                 request_number_of_clock_pulses(self,7);
