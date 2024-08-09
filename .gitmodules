@@ -1,3 +1,6 @@
 [submodule "source/fpga_communication"]
 	path = source/fpga_communication
 	url = https://github.com/johonkanen/fpga_communication.git
+[submodule "source/hVHDL_fixed_point"]
+	path = source/hVHDL_fixed_point
+	url = https://github.com/hVHDL/hVHDL_fixed_point.git
