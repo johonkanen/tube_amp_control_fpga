@@ -8,11 +8,11 @@ LIBRARY ieee  ;
 library vunit_lib;
 context vunit_lib.vunit_context;
 
-entity ads7056_tb is
+entity clock_divider_tb is
   generic (runner_cfg : string);
 end;
 
-architecture vunit_simulation of ads7056_tb is
+architecture vunit_simulation of clock_divider_tb is
 
     constant clock_period      : time    := 1 ns;
     constant simtime_in_clocks : integer := 5000;
@@ -29,28 +29,18 @@ architecture vunit_simulation of ads7056_tb is
 
     signal ad_clock : std_logic := '1';
 
-    type ads_7056_states is (wait_for_init, initializing, ready);
-    signal state : ads_7056_states := wait_for_init;
-    signal conversion_requested : boolean := false;
-
-    type ads_7056_record is record
-        clock_divider : clock_divider_record;
-        state : ads_7056_states;
-        conversion_requested : boolean;
-    end record;
-
-    constant init_ads_7056 : ads_7056_record := (init_clock_divider,wait_for_init, false);
+    signal number_of_rising_edges : natural := 0;
 
 begin
 
     clock_counter <= self.clock_counter;
-    /* state <= self.state; */
 
 ------------------------------------------------------------------------
     simtime : process
     begin
         test_runner_setup(runner, runner_cfg);
         wait for simtime_in_clocks*clock_period;
+        check(number_of_rising_edges = 7, "expected 7, got " & integer'image(number_of_rising_edges));
         test_runner_cleanup(runner); -- Simulation ends here
         wait;
     end process simtime;	
@@ -64,37 +54,22 @@ begin
         if rising_edge(simulator_clock) then
             simulation_counter <= simulation_counter + 1;
 
-            ad_clock <= get_clock_from_divider(self);
             create_clock_divider(self);
-
-            conversion_requested <= false;
-            CASE state is 
-                WHEN wait_for_init =>
-                    if conversion_requested then
-                        request_number_of_clock_pulses(self, 24);
-                        state <= initializing;
-                    end if;
-                WHEN initializing  =>
-                    if clock_divider_is_ready(self) then
-                        state <= ready;
-                    end if;
-                WHEN ready =>
-                    if conversion_requested then
-                        request_number_of_clock_pulses(self, 18);
-                    end if;
-            end CASE;
-
-            CASE simulation_counter is
-                WHEN 15 => conversion_requested <= true;
-                WHEN 200 => conversion_requested <= true;
-                WHEN others => --do nothing
-            end CASE; --simulation_counter
+            ad_clock <= get_clock_from_divider(self);
 
             if simulation_counter = 15 then
-                conversion_requested <= true;
+                request_number_of_clock_pulses(self,7);
             end if;
 
         end if; -- rising_edge
     end process stimulus;	
 ------------------------------------------------------------------------
+
+    check_clocks : process(ad_clock)
+        
+    begin
+        if rising_edge(ad_clock) then
+            number_of_rising_edges <= number_of_rising_edges + 1;
+        end if; --rising_edge
+    end process check_clocks;	
 end vunit_simulation;
