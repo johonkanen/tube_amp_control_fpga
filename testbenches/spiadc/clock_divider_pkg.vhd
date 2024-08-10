@@ -26,6 +26,9 @@ package clock_divider_pkg is
 ----------------------------------------------------
     function clock_divider_is_ready ( self : clock_divider_record)
         return boolean;
+----------------------------------------------------
+    function get_clock_counter ( self : clock_divider_record)
+        return natural;
 
 end package clock_divider_pkg;
 
@@ -92,6 +95,16 @@ package body clock_divider_pkg is
         return self.is_ready;
 
     end clock_divider_is_ready;
+----------------------------------------------------
+    function get_clock_counter
+    (
+        self : clock_divider_record
+    )
+    return natural
+    is
+    begin
+        return self.clock_counter;
+    end get_clock_counter;
 ----------------------------------------------------
 
 end package body clock_divider_pkg;
