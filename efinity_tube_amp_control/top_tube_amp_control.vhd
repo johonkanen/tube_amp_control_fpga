@@ -3,6 +3,7 @@ library ieee;
     use ieee.numeric_std.all;
     use ieee.math_real.all;
 
+    use work.ads7056_pkg.all;
     use work.hrpwm_pkg.all;
 
 entity top is
@@ -55,6 +56,9 @@ architecture rtl of top is
 
     signal deadtime_counter : natural range 0 to 255 := 160;
 
+    signal ads7056 : ads7056_record := init_ads7056;
+    signal mux_selection : std_logic_vector(15 downto 0) := (others => '0');
+
 begin
 
     adc_sda_OE  <= '0';
@@ -65,18 +69,25 @@ begin
     dac_sda_OUT <= '1';
     dac_scl     <= '1';
 
-    admux    <= (others => '1');
-    ad_cs    <= '1';
+    admux    <= mux_selection(2 downto 0);
+    /* ad_cs    <= '1'; */
     -- ad_data  <= power_connector_io1(0);
-    ad_clock <= '1';
+    /* ad_clock <= '1'; */
 
 ------------------------------------------------
     board_test_main : process(main_clock)
     begin
         if rising_edge(main_clock) then
 
+            create_ads7056_driver(ads7056                   ,
+                                  cs            => ad_cs    ,
+                                  spi_clock_out => ad_clock ,
+                                  serial_io     => ad_data);
+
             init_bus(bus_out);
             connect_read_only_data_to_address(bus_from_communications, bus_out, 1, 44252);
+            connect_read_only_data_to_address(bus_from_communications, bus_out, 2, get_converted_measurement(ads7056));
+            connect_data_to_address(bus_from_communications, bus_out, 3, mux_selection);
             connect_data_to_address(bus_from_communications, bus_out, 12, duty_ratio);
 
             -----
@@ -84,6 +95,10 @@ begin
                 pwm_counter <= pwm_counter + 1;
             else
                 pwm_counter <= 0;
+            end if;
+
+            if pwm_counter = duty/2 then
+                request_conversion(ads7056);
             end if;
 
             -----

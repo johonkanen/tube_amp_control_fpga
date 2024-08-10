@@ -4,7 +4,6 @@ LIBRARY ieee  ;
     USE ieee.std_logic_1164.all  ; 
     use ieee.math_real.all;
 
-    use work.clock_divider_pkg.all;
     use work.ads7056_pkg.all;
 
 library vunit_lib;
