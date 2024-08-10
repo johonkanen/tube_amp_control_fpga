@@ -31,6 +31,7 @@ architecture vunit_simulation of ads7056_tb is
 
     signal ad_clock : std_logic;
     signal ad_data : std_logic := '1';
+    signal cs : std_logic;
 
 begin
 
@@ -55,7 +56,7 @@ begin
         if rising_edge(simulator_clock) then
             simulation_counter <= simulation_counter + 1;
 
-            create_ads7056_driver(self, ad_data,  ad_clock);
+            create_ads7056_driver(self , ad_data , cs , ad_clock);
 
             CASE simulation_counter is
                 WHEN 15  => request_conversion(self);

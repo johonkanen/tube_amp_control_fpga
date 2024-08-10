@@ -24,8 +24,9 @@ package ads7056_pkg is
 
 -------------------------------------------------------------------
     procedure create_ads7056_driver (
-        signal self : inout ads7056_record;
-        serial_io : in std_logic;
+        signal self          : inout ads7056_record;
+        serial_io            : in std_logic;
+        signal cs            : out std_logic;
         signal spi_clock_out : out std_logic);
 
 -------------------------------------------------------------------
@@ -49,8 +50,9 @@ package body ads7056_pkg is
 -------------------------------------------------------------------
     procedure create_ads7056_driver
     (
-        signal self : inout ads7056_record;
-        serial_io : in std_logic;
+        signal self          : inout ads7056_record;
+        serial_io            : in std_logic;
+        signal cs            : out std_logic;
         signal spi_clock_out : out std_logic
     ) is
     begin
@@ -87,6 +89,14 @@ package body ads7056_pkg is
 
         if self.data_capture_delay = 3 then
             request_number_of_clock_pulses(self.data_capture_counter, 18);
+        end if;
+
+        if self.conversion_requested then
+            cs <= '0';
+        end if;
+
+        if clock_divider_is_ready(self.clock_divider) then
+            cs <= '1';
         end if;
 
         if get_clock_counter(self.data_capture_counter) = 2 then
