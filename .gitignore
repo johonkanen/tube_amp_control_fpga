@@ -110,5 +110,9 @@ efinity_tube_amp_control/work_syn/
 .lock
 __pycache__
 output/
+outflow/
+work_pnr/
+work_pt/
+work_syn/
 
 work/
