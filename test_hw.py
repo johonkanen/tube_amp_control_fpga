@@ -16,5 +16,6 @@ print("data from test address 2 : " + str(uart.request_data_from_address(2)))
 print("data from test address 2 : " + str(uart.request_data_from_address(2)))
 print("data from test address 2 : " + str(uart.request_data_from_address(2)))
 
-# uart.plot_data_from_address(2, 50000)
+uart.write_data_to_address(3, 0)
+uart.plot_data_from_address(2, 50000)
 

@@ -70,9 +70,6 @@ begin
     dac_scl     <= '1';
 
     admux    <= mux_selection(2 downto 0);
-    /* ad_cs    <= '1'; */
-    -- ad_data  <= power_connector_io1(0);
-    /* ad_clock <= '1'; */
 
 ------------------------------------------------
     board_test_main : process(main_clock)
