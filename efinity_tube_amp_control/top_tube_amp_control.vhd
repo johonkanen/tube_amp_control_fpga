@@ -58,6 +58,7 @@ architecture rtl of top is
 
     signal ads7056 : ads7056_record := init_ads7056;
     signal mux_selection : std_logic_vector(15 downto 0) := (others => '0');
+    signal sample_delay : natural range 0 to 1023 := 0;
 
 begin
 
@@ -86,6 +87,7 @@ begin
             connect_read_only_data_to_address(bus_from_communications, bus_out, 2, get_converted_measurement(ads7056));
             connect_data_to_address(bus_from_communications, bus_out, 3, mux_selection);
             connect_data_to_address(bus_from_communications, bus_out, 12, duty_ratio);
+            connect_data_to_address(bus_from_communications, bus_out, 13, sample_delay);
 
             -----
             if pwm_counter < 4999 then
@@ -94,7 +96,7 @@ begin
                 pwm_counter <= 0;
             end if;
 
-            if pwm_counter = duty/2 then
+            if pwm_counter = duty/2-100 + sample_delay then
                 request_conversion(ads7056);
             end if;
 
@@ -116,7 +118,7 @@ begin
                 deadtime_counter <= 0;
             end if;
 
-            if deadtime_counter < 159 then
+            if deadtime_counter < 40 then
                 deadtime_counter <= deadtime_counter + 1;
                 anode_gate_hi  <= '0';
                 anode_gate_lo  <= '0';
