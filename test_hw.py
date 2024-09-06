@@ -19,8 +19,8 @@ uart.write_data_to_address(12,initial_duty)
 # print("data from test address 2 : " + str(uart.request_data_from_address(2)))
 # print("data from test address 2 : " + str(uart.request_data_from_address(2)))
 
-uart.write_data_to_address(13, 200)
-# uart.plot_data_from_address(2, 50000)
+uart.write_data_to_address(3, 0)
+uart.plot_data_from_address(2, 50000)
 
 def plot_channel(channel_num, number_of_points):
     uart.write_data_to_address(3, channel_num)
